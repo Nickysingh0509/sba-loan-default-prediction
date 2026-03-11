@@ -107,4 +107,74 @@ Interest Rate = 10%
 - Cost of False Positive = $100,000  
 - Cost of False Negative = $1,000,000  
 
-Cost-based optimal cutoff:
+Cost-based optimal cutoff: p* = Cost(FP) / (Cost(FP) + Cost(FN))
+= 100,000 / (1,100,000)
+= 0.0909
+
+
+**Optimal cutoff ≈ 9.1%**
+
+This means:
+
+- Deny loan if predicted probability ≥ 9.1%
+- Approve only if predicted probability < 9.1%
+
+This is significantly lower than the default 0.50 threshold  
+and better reflects real financial risk.
+
+---
+
+## 🔁 Precision–Recall Tradeoff
+
+The project also evaluates:
+
+- Maximizing recall under precision constraints
+- Adjusting thresholds based on asymmetric misclassification costs
+- Business-driven classification rules
+
+Result:
+
+The current feature set cannot achieve precision ≥ 0.80 while maintaining strong recall — demonstrating the limits of the reduced model.
+
+---
+
+## 🛠 Technologies Used
+
+- Python
+- Pandas
+- NumPy
+- Scikit-learn
+- Statsmodels
+- Matplotlib
+- dmba (Gains & Lift visualization)
+
+---
+
+## 📂 Repository Structure
+SBA_Final.ipynb → Complete modeling, evaluation, and threshold analysis
+
+---
+
+## 🚀 How to Run
+
+1. Install required libraries: pip install pandas numpy scikit-learn statsmodels matplotlib dmba
+2. Place `SBAcase.11.13.17.csv` in the same directory
+3. Run `SBA_Final.ipynb` in Jupyter Notebook
+
+---
+
+## 📌 Key Takeaways
+
+- Logistic Regression provides strong interpretability for credit risk modeling.
+- Accuracy alone is insufficient in financial decision systems.
+- Decision thresholds must reflect cost asymmetry.
+- Lift analysis is critical for evaluating ranking performance.
+- Model performance constraints highlight the need for richer features in production systems.
+
+---
+
+## 📎 Author
+
+Nicky Kumari  
+Business Analytics | Machine Learning | Risk Modeling
+
