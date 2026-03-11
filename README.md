@@ -1,120 +1,110 @@
-SBA Loan Default Prediction using Logistic Regression
-📌 Project Overview
+# 📊 SBA Loan Default Prediction  
+### Logistic Regression for Credit Risk Modeling
 
-This project builds a Logistic Regression model to predict the probability of loan default using the SBA (Small Business Administration) case dataset.
+> A cost-sensitive machine learning project focused on predicting small business loan default risk and optimizing decision thresholds for real-world banking applications.
 
-The objective is to:
+---
 
-Reproduce published model coefficients (Table 7 & 8)
+## 🔎 Project Overview
 
-Evaluate classification performance on validation data
+This project builds and evaluates a Logistic Regression model to predict the probability of default for SBA (Small Business Administration) loans.
 
-Analyze gains and lift
+Rather than stopping at model accuracy, this analysis goes further by:
 
-Perform cost-sensitive threshold selection
+- Reproducing published model coefficients from academic research
+- Evaluating classification performance using multiple metrics
+- Analyzing gains and lift for ranking performance
+- Implementing cost-based threshold optimization
+- Demonstrating how business costs should influence lending decisions
 
-Provide business interpretation of model outputs
+The focus is not just prediction — but **risk management and profitability trade-offs**.
 
-🧠 Business Problem
+---
 
-Banks must decide whether to approve or deny a loan application.
+## 🏦 Business Context
 
-Two types of mistakes exist:
+Banks face two types of costly mistakes:
 
-Approving a risky loan (high financial loss)
+- **False Negative (Approve a risky loan)** → Potential loss of entire principal  
+- **False Positive (Deny a safe loan)** → Lost interest income  
 
-Denying a safe loan (lost interest income)
+Using a default 0.50 cutoff probability is often unrealistic in lending.
 
-This project explores how different decision thresholds impact business risk and profitability.
+This project demonstrates how to determine optimal decision thresholds based on:
 
-🛠 Technologies Used
+- Financial loss asymmetry
+- Misclassification costs
+- Precision–recall trade-offs
+- Business risk tolerance
 
-Python
+---
 
-Pandas
+## 🧠 Model Specification
 
-NumPy
+Final Reduced Logistic Regression Model (Table 8 replication):
 
-Scikit-learn
+**Predictors:**
+- `RealEstate`
+- `Portion`
+- `Recession`
 
-Statsmodels
+**Estimated Coefficients (replicated to 4 decimals):**
 
-Matplotlib
+| Variable      | Estimate |
+|---------------|----------|
+| Intercept     | 1.3931   |
+| RealEstate    | -2.1282  |
+| Portion       | -2.9875  |
+| Recession     | 0.5041   |
 
-dmba (for gains & lift charts)
+Model fitted using:
+- `sklearn.LogisticRegression (liblinear)`
+- `sklearn.LogisticRegression (lbfgs)`
+- Regularization neutralized (C = 1e10)
 
-📊 Model Details
+---
 
-Reduced Logistic Regression Model (Table 8 predictors):
+## 📈 Model Performance (Validation Set)
 
-RealEstate
+Using 0.50 cutoff:
 
-Portion
+| Metric        | Value   |
+|---------------|---------|
+| Accuracy      | 0.6784  |
+| Recall        | 0.0873  |
+| Specificity   | 0.9799  |
+| Precision     | 0.6889  |
+| F1-score      | 0.1550  |
 
-Recession
+### Insight
 
-Model coefficients reproduced to 4 decimal places using:
+The model is highly specific (good at identifying safe loans)  
+but performs poorly at catching defaults under the 0.50 threshold.
 
-sklearn LogisticRegression (liblinear)
+This highlights why threshold tuning is essential in credit risk modeling.
 
-sklearn LogisticRegression (lbfgs)
+---
 
-📈 Model Evaluation
+## 📊 Gains & Lift Analysis
 
-Validation Set Results (cutoff = 0.50):
-
-Accuracy: 0.6784
-
-Recall (Sensitivity): 0.0873
-
-Specificity: 0.9799
-
-Precision: 0.6889
-
-F1-score: 0.1550
-
-Key Insight:
-
-The model is strong at identifying safe loans but weak at catching defaults at the 0.5 cutoff.
-
-💰 Cost-Sensitive Decision Analysis
-
-Instead of using the default 0.50 cutoff, we compute business-driven thresholds.
-
-Example:
-
-For a $1,000,000 loan at 10% interest:
-
-Cost-based cutoff:
-
-p* = 100,000 / (100,000 + 1,000,000) = 0.0909
-
-This shows why business costs must influence classification decisions.
-
-📉 Gains & Lift
-
-First decile lift: 1.6056
+- First Decile Lift: **1.61**
 
 Interpretation:
 
-The top 10% of loans flagged by the model contain 1.61x more defaults than random selection.
+The top 10% of loans ranked by predicted probability contain  
+**1.61 times more defaults than random selection**.
 
-📂 Files
-SBA_Final.ipynb → Complete modeling and evaluation notebook
+This confirms that the model effectively ranks high-risk loans toward the top.
 
-🚀 How to Run
+---
 
-Install dependencies: pip install pandas numpy scikit-learn statsmodels matplotlib dmba
-Place SBAcase.11.13.17.csv in the same directory
+## 💰 Cost-Sensitive Threshold Optimization
 
-Run the notebook in Jupyter
+### Scenario:  
+Loan Amount = $1,000,000  
+Interest Rate = 10%  
 
-📌 Key Takeaways
+- Cost of False Positive = $100,000  
+- Cost of False Negative = $1,000,000  
 
-Logistic regression can effectively rank loan risk
-
-Decision threshold must reflect financial cost structure
-
-Default 0.50 cutoff is rarely optimal in lending decisions
-
-Precision–recall tradeoff is critical in credit risk modeling
+Cost-based optimal cutoff:
