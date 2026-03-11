@@ -17,7 +17,7 @@ Rather than stopping at model accuracy, this analysis goes further by:
 - Implementing cost-based threshold optimization
 - Demonstrating how business costs should influence lending decisions
 
-The focus is not just prediction — but **risk management and profitability trade-offs**.
+The focus is not just prediction  but **risk management and profitability trade-offs**.
 
 ---
 
